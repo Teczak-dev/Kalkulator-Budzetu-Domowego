@@ -8,209 +8,295 @@
 import SwiftUI
 
 struct MainPage: View {
+    @AppStorage("money") private var money : Double = 0.0
     
     @State var percentOfExpenses:[Double] = [0.0, 0.0, 0.0, 0.0]
-    
+    @State var percentOfExpensesToProgressView:[Double] = [0.0, 0.0, 0.0, 0.0]
     
     var body: some View {
-        ZStack {
-            Color("Background")
-            VStack{
+            ZStack {
+                Color("Background")
+                    .edgesIgnoringSafeArea(.all)
+                ScrollView{
                 
-                VStack{
-                    
-                    // Jedzenie
-                    HStack(alignment: .center){
-                        Spacer()
-                        Image(systemName: "fork.knife")
-                            .foregroundStyle(.white)
+                    VStack{
+                        
+                        // Statystyki
                         ZStack{
-                            ProgressView(value: percentOfExpenses[0], total: 100)
-                                .frame(width: 300.0)
-                                .scaleEffect(x: 1.0, y: 6)
-                                .accentColor(.white)
-                            Text( String(percentOfExpenses[0])+"%")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.orange)
+                            
+                            RoundedRectangle(cornerRadius: 40)
+                                .fill(Color(.darkGray) )
+                                .ignoresSafeArea(.all)
+                                .frame(width: 400.0, height: 350.0)
+                                
+                            VStack{
+                                
+                                // Jedzenie
+                                HStack(alignment: .center){
+                                    Spacer()
+                                    Image(systemName: "fork.knife")
+                                        .foregroundStyle(.white)
+                                    ZStack{
+                                        ProgressView(value: percentOfExpensesToProgressView[0], total: 100)
+                                            .frame(width: 300.0)
+                                            .scaleEffect(x: 1.0, y: 6)
+                                            .accentColor(.white)
+                                        Text( String(percentOfExpenses[0])+"%")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.orange)
+                                    }
+                                }
+                                .padding(.trailing, 20)
+                                .padding(.top,30)
+                                .font(.title)
+                                
+                                // Transport
+                                HStack(alignment: .center){
+                                    Spacer()
+                                    Image(systemName: "airplane.departure")
+                                        .foregroundStyle(.white)
+                                    ZStack{
+                                        ProgressView(value: percentOfExpensesToProgressView[1], total: 100)
+                                            .frame(width: 300.0)
+                                            .scaleEffect(x: 1.0, y: 6)
+                                            .accentColor(.white)
+                                        Text(String(percentOfExpenses[1])+"%")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.orange)
+                                    }
+                                }
+                                .padding(.top, 10)
+                                .padding(.trailing, 20)
+                                .font(.title)
+                                
+                                // Zabawa
+                                HStack(alignment: .center){
+                                    Spacer()
+                                    Image(systemName: "theatermasks.fill")
+                                        .foregroundStyle(.white)
+                                    ZStack{
+                                        ProgressView(value: percentOfExpensesToProgressView[2], total: 100)
+                                            .frame(width: 300.0)
+                                            .scaleEffect(x: 1.0, y: 6)
+                                            .accentColor(.white)
+                                        Text(String(percentOfExpenses[2])+"%")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.orange)
+                                    }
+                                }
+                                .padding(.top, 10)
+                                .padding(.trailing, 20)
+                                .font(.title)
+                                
+                                // rachunki
+                                HStack(alignment: .center){
+                                    Spacer()
+                                    Image(systemName: "newspaper.fill")
+                                        .foregroundStyle(.white)
+                                    ZStack{
+                                        ProgressView(value: percentOfExpensesToProgressView[3], total: 100)
+                                            .frame(width: 300.0)
+                                            .scaleEffect(x: 1.0, y: 6)
+                                            .accentColor(.white)
+                                        Text(String(percentOfExpenses[3])+"%")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.orange)
+                                    }
+                                }
+                                .padding(.top, 10)
+                                .padding(.trailing, 20)
+                                .font(.title)
+                                
+                                Text( String(money) + " PLN" )
+                                    .font(.title)
+                                    .foregroundStyle(.white)
+                                    .padding(.bottom, 10)
+                                    .padding(.top, 10)
+                                    .fontWeight(.bold)
+                            }
                         }
-                    }
-                    .padding(.trailing, 20)
-                    .font(.title)
-                    
-                    // Transport
-                    HStack(alignment: .center){
                         Spacer()
-                        Image(systemName: "airplane.departure")
+                        
+                        HStack{
+                            Button("Add 10 PLN"){
+                                money += 10.0
+                            }
+                            .padding(20)
+                            .background(Color(.gray))
+                            .cornerRadius(20)
+                            .padding(.top, 50)
+                            .padding(.bottom, 50)
                             .foregroundStyle(.white)
-                        ZStack{
-                            ProgressView(value: percentOfExpenses[1], total: 100)
-                                .frame(width: 300.0)
-                                .scaleEffect(x: 1.0, y: 6)
-                                .accentColor(.white)
-                            Text(String(percentOfExpenses[1])+"%")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.orange)
-                        }
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 20)
-                    .font(.title)
-                    
-                    // Zabawa
-                    HStack(alignment: .center){
-                        Spacer()
-                        Image(systemName: "theatermasks.fill")
+                            
+                            Button("Remove 10 PLN"){
+                                money -= 10.0
+                            }
+                            .padding(20)
+                            .background(Color(.gray))
+                            .cornerRadius(20)
+                            .padding(.top, 50)
+                            .padding(.bottom, 50)
                             .foregroundStyle(.white)
+                        }
+                        
+                        
+                        // Last Transactions History
                         ZStack{
-                            ProgressView(value: percentOfExpenses[2], total: 100)
-                                .frame(width: 300.0)
-                                .scaleEffect(x: 1.0, y: 6)
-                                .accentColor(.white)
-                            Text(String(percentOfExpenses[2])+"%")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.orange)
+                            VStack(alignment: .leading){
+                                HStack{
+                                    
+                                    Rectangle()
+                                        .fill(Color(.white))
+                                        .frame(width: 10,height: 30)
+                                        .padding(.leading, 10)
+                                    
+                                    Text("Historia")
+                                        .font(.title)
+                                        .foregroundStyle(.white)
+                                }
+                                VStack{
+                                    ZStack{
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(Color(.gray))
+                                            .frame(width: 400, height: 800)
+                                        // elementy historii jeden pod drugim :>
+                                        VStack{
+                                            // Item
+                                            VStack{
+                                                HStack{
+                                                    Image(systemName: "fork.knife")
+                                                    Text("Biedronka")
+                                                    
+                                                }
+                                                .font(.title)
+                                                .foregroundStyle(.white)
+                                                .frame(width:320,alignment: .leading)
+                                                Spacer()
+                                                Text("- 214.93 PLN")
+                                                    .font(.title2)
+                                                    .foregroundStyle(.white)
+                                                    .frame(width: 320, alignment: .trailing)
+                                                Spacer()
+                                            }
+                                            .frame(width: 330, height: 100)
+                                            .padding(20)
+                                            .background(Color(.darkGray))
+                                            .cornerRadius(20)
+                                            .padding(.top, 20)
+                                            
+                                            
+                                            // Item
+                                            VStack{
+                                                HStack{
+                                                    Image(systemName: "fork.knife")
+                                                    Text("Biedronka")
+                                                    
+                                                }
+                                                .font(.title)
+                                                .foregroundStyle(.white)
+                                                .frame(width:320,alignment: .leading)
+                                                Spacer()
+                                                Text("- 214.93 PLN")
+                                                    .font(.title2)
+                                                    .foregroundStyle(.white)
+                                                    .frame(width: 320, alignment: .trailing)
+                                                Spacer()
+                                            }
+                                            .frame(width: 330, height: 100)
+                                            .padding(20)
+                                            .background(Color(.darkGray))
+                                            .cornerRadius(20)
+                                            .padding(.top, 20)
+                                            
+                                            // Item
+                                            VStack{
+                                                HStack{
+                                                    Image(systemName: "fork.knife")
+                                                    Text("Biedronka")
+                                                        
+                                                }
+                                                    .font(.title)
+                                                    .foregroundStyle(.white)
+                                                    .frame(width:320,alignment: .leading)
+                                                Spacer()
+                                                Text("- 214.93 PLN")
+                                                    .font(.title2)
+                                                    .foregroundStyle(.white)
+                                                    .frame(width: 320, alignment: .trailing)
+                                                Spacer()
+                                            }
+                                            .frame(width: 330, height: 100)
+                                            .padding(20)
+                                            .background(Color(.darkGray))
+                                            .cornerRadius(20)
+                                            .padding(.top, 20)
+                                            
+                                            // Item
+                                            VStack{
+                                                HStack{
+                                                    Image(systemName: "fork.knife")
+                                                    Text("Biedronka")
+                                                        
+                                                }
+                                                    .font(.title)
+                                                    .foregroundStyle(.white)
+                                                    .frame(width:320,alignment: .leading)
+                                                Spacer()
+                                                Text("- 214.93 PLN")
+                                                    .font(.title2)
+                                                    .foregroundStyle(.white)
+                                                    .frame(width: 320, alignment: .trailing)
+                                                Spacer()
+                                            }
+                                            .frame(width: 330, height: 100)
+                                            .padding(20)
+                                            .background(Color(.darkGray))
+                                            .cornerRadius(20)
+                                            .padding(.top, 20)
+                                            
+                                        }
+                                    }
+                                }
+                                
+                            }
                         }
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 20)
-                    .font(.title)
-                    
-                    // rachunki
-                    HStack(alignment: .center){
-                        Spacer()
-                        Image(systemName: "newspaper.fill")
-                            .foregroundStyle(.white)
-                        ZStack{
-                            ProgressView(value: percentOfExpenses[3], total: 100)
-                                .frame(width: 300.0)
-                                .scaleEffect(x: 1.0, y: 6)
-                                .accentColor(.white)
-                            Text(String(percentOfExpenses[3])+"%")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.orange)
-                        }
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 20)
-                    .font(.title)
-                    
-                }
-                .padding(.top, 40)
-                Spacer()
-                
-                VStack{
-                    Image(systemName: "fork.knife")
-                        .foregroundStyle(.white)
-                        .scaleEffect(x: 2, y: 2)
-//                    Image(systemName: "airplane.departure")
-//                    Image(systemName: "theatermasks.fill")
-//                    Image(systemName: "newspaper.fill")
-                    
-                    HStack{
-                        Button(" - "){
-                            DelValue(id: 0)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
+                        .padding(.top, 30)
                         
-                        Button(" + "){
-                            AddValue(id: 0)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                    }
-                    .padding(.bottom, 20)
-                    
-                    Image(systemName: "airplane.departure")
-                        .foregroundStyle(.white)
-                        .scaleEffect(x: 2, y: 2)
-//                    Image(systemName: "theatermasks.fill")
-//                    Image(systemName: "newspaper.fill")
-                    
-                    HStack{
-                        Button(" - "){
-                            DelValue(id: 1)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        
-                        Button(" + "){
-                            AddValue(id: 1)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                    }
-                    .padding(.bottom, 20)
-                    
-                    
-                    Image(systemName: "theatermasks.fill")
-                        .foregroundStyle(.white)
-                        .scaleEffect(x: 2, y: 2)
-//                    Image(systemName: "newspaper.fill")
-                    
-                    HStack{
-                        Button(" - "){
-                            DelValue(id: 2)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        
-                        Button(" + "){
-                            AddValue(id: 2)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                    }
-                    .padding(.bottom, 20)
-                    
-                    Image(systemName: "newspaper.fill")
-                        .foregroundStyle(.white)
-                        .scaleEffect(x: 2, y: 2)
-                    
-                    HStack{
-                        Button(" - "){
-                            DelValue(id: 3)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
                         
                         
-                        Button(" + "){
-                            AddValue(id: 3)
-                        }
-                        .font(.title2)
-                        .foregroundStyle(.white)
                     }
-                    .padding(.bottom, 20)
-                    
-                }
-                Spacer()
-                
-                
-            }
+            }.ignoresSafeArea(.all)
         }
     }
+        
     
     func AddValue(id: Int){
+        money -= 10.5
         if percentOfExpenses[id] < 100.0{
-            percentOfExpenses[id] += 5.0
+            percentOfExpensesToProgressView[id] += 5.0
         }
         else{
-            percentOfExpenses[id] = 100.0
-        
+            percentOfExpensesToProgressView[id] = 100.0
         }
+        percentOfExpenses[id] += 5.0
+        
     }
     
     func DelValue(id: Int){
-        if percentOfExpenses[id] > 0.0{
+        if percentOfExpenses[id] > 0.0 && percentOfExpenses[id] <= 100.0{
+            percentOfExpenses[id] -= 5.0
+            percentOfExpensesToProgressView[id] -= 5.0
+        }
+        else if percentOfExpenses[id] > 100.0{
             percentOfExpenses[id] -= 5.0
         }
         else{
             percentOfExpenses[id] = 0.0
+            percentOfExpensesToProgressView[id] = 0.0
         }
     }
     
